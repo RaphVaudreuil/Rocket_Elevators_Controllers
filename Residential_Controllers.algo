@@ -18,6 +18,7 @@
 //External button function
 
     SEQUENCE external_button USING user_direction AND Elevator_A_emplacement AND Elevator_B_emplacement
+        
 
 
     
