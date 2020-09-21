@@ -14,7 +14,6 @@
         SET user_emplacement TO UNDEFINED
         SET wanted_floor TO UNDEFINED
         SET open_door TO FALSE
-        SET close_door TO TRUE
     ENDSEQUENCE
 
 //Default parameters
@@ -48,15 +47,15 @@
 
 //Internal button function
 
-//Open door function
+//Doors function
 
     SEQUENCE open_door USING default_floor AND user_emplacement
         SET open_door TO TRUE IF elevator EQUAL default_floor AND user_emplacement
     ENDSEQUENCE
 
+//Doors function
 
-
-
+        
 
 
 
