@@ -11,14 +11,53 @@
         SET user_direction TO NULL
         SET Elevator_A_emplacement TO UNDEFINED
         SET Elevator_B_emplacement TO UNDEFINED
+        SET user_emplacement TO UNDEFINED
+        SET wanted_floor TO UNDEFINED
+        SET open_door TO FALSE
+        SET close_door TO TRUE
     ENDSEQUENCE
 
 //Default parameters
 
 //External button function
 
-    SEQUENCE external_button USING user_direction AND Elevator_A_emplacement AND Elevator_B_emplacement
-        
+    SEQUENCE external_button USING Elevator_A_emplacement AND Elevator_B_emplacement AND user_emplacement AND elevators_direction
+
+        IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
+            elevators_direction EQUAL up
+        ELSE 
+            elevators_direction EQUAL down
+        ENDIF
+        CALL open_door
+        CALL close_door 
+    ENDSEQUENCE
+
+//External button function
+
+//Internal button function
+
+    SEQUENCE internal_button USING user_emplacement AND wanted_floor AND elevators_direction
+
+        IF wanted_floor IS GREATER THAN user_emplacement THEN
+            elevators_direction EQUAL up
+        ELSE
+            elevators_direction EQUAL down
+        ENDIF
+        CALL close_door 
+    ENDSEQUENCE
+
+//Internal button function
+
+//Open door function
+
+    SEQUENCE open_door USING default_floor AND user_emplacement
+        SET open_door TO TRUE IF elevator EQUAL default_floor AND user_emplacement
+    ENDSEQUENCE
+
+
+
+
+
 
 
     
