@@ -1,7 +1,27 @@
-SET default_floor TO 1
-SET number_of_elevators TO 2
-SET number_of_column TO 1
-SET number_of_floors TO 10
-SET elevators_direction TO NULL
-SET maximum_load TO 1275 kg
-SET user_direction TO NULL
+//Default parameters
+    
+    SEQUENCE parameters
+        SET default_floor FOR elevator A TO 2
+        SET default_floor FOR elevator B TO 6
+        SET number_of_elevators TO 2
+        SET number_of_column TO 1
+        SET number_of_floors TO 10
+        SET elevators_direction TO NULL
+        SET maximum_load TO 1275 kg
+        SET user_direction TO NULL
+        SET Elevator_A_emplacement TO UNDEFINED
+        SET Elevator_B_emplacement TO UNDEFINED
+    ENDSEQUENCE
+
+//Default parameters
+
+//External button function
+
+    SEQUENCE external_button USING user_direction AND Elevator_A_emplacement AND Elevator_B_emplacement
+
+
+    
+
+
+
+
