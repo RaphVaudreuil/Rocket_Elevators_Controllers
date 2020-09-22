@@ -106,6 +106,18 @@
         SET elevator_A_emplacement TO second floor
         SET elevator_B_status TO IDLE
         SET elevator_B_emplacement TO sixth floor
+        IF hour IS between 7am AND 9am THEN
+            SET default_floor FOR elevator_A TO second floor
+            SET default_floor FOR elevator_B TO sixth floor
+        ELSE 
+            CALL elevator_A_emplacement AND elevator_B_emplacement
+        ENDIF
+        IF hour IS between 4pm and 6pm THEN 
+            SET default_floor FOR elevator_A TO first floor
+            SET default_floor FOR elevator_B TO first floor
+        ELSE 
+            CALL elevator_A_emplacement AND elevator_B_emplacement
+        ENDIF
     ENDSEQUENCE
 
     SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND elevator_A_movement AND user_emplacement AND open_doors
