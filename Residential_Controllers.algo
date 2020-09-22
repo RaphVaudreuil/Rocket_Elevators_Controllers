@@ -103,17 +103,51 @@
                 RETURN opening_doors
     ENDSEQUENCE
 
-    SEQUENCE user_into_elevator
+    SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door
             READ total_weight
             IF total_weight <= 1275 KG THEN 
                 SET red_light TO FALSE
-                CONTINUE picking_up_user UNTIL total_weight EQUAL 1275 KG
+                CONTINUE picking_up_user
             ELSE
                 SET red_light TO TRUE
                 STOP picking_up_user
             ENDIF
-            READ user is input
-            
+            READ users is input
+            CALL security RETURNING 20 seconds
+            RETURN close_door      
+    ENDSEQUENCE
+
+    SEQUENCE elevator_in_action USING elevator_A_movement AND number_floor
+        SET elevator_A_movement TO up 
+        WHILE elevator in movement 
+            READ number_floor
+        ENDWHILE
+    ENDSEQUENCE
+
+    SEQUENCE elevator_arrived_to_destination USING elevator_A_movement AND open_doors 
+        READ number_floor
+        IF number_floor EQUAL floor_requested THEN 
+            SET elevator_A_status TO IDLE
+            SET open_doors TO TRUE
+            CALL security RETURNING 20 seconds
+            RETURN close_door 
+        ELSE 
+            SET elevator_A_status TO movement
+        ENDIF
+    ENDSEQUENCE
+
+    SEQUENCE back_origin
+        SET default_floor_A TO second floor
+        CALL default_floor_A RETURNING second floor
+    ENDSEQUENCE
+
+//SCENE 1
+
+
+
+    
+
+
 
 
 
