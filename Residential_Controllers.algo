@@ -19,12 +19,11 @@
         ENDIF
     ENDSEQUENCE
 
-    SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND elevator_A_movement AND user_emplacement AND open_doors
+    SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND user_emplacement AND open_doors
         SET user_emplacement TO third floor
         CALL elevator RETURNING elevator_A
         RETURN elevator_A
         SET elevator_A_status TO Movement
-        SET elevator_A_movement TO UP
         WHILE elevator in movement 
             READ number_floor
         ENDWHILE
@@ -36,7 +35,7 @@
         CALL open_doors
     ENDSEQUENCE
 
-    SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door AND security AND wich_floor AND elevator_movement AND elevator_status AND number_floor
+    SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door AND security AND wich_floor AND elevator_status AND number_floor
             READ total_weight
             IF total_weight <= 1275 KG THEN 
                 SET red_light TO FALSE
@@ -50,7 +49,6 @@
             CALL security RETURNING 20 seconds
             RETURN close_door 
             SET elevator_status TO movement
-            SET elevator_movement TO up
             WHILE elevator in movement
                 READ number_floor
             ENDWHILE
