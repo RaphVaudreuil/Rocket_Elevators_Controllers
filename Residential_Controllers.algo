@@ -1,8 +1,8 @@
 //Default parameters
     
     SEQUENCE parameters
-        SET default_floor FOR elevator A TO 2
-        SET default_floor FOR elevator B TO 6
+        SET default_floor FOR elevator A TO UNDEFINED
+        SET default_floor FOR elevator B TO UNDEFINED
         SET number_of_elevators TO 2
         SET number_of_column TO 1
         SET number_of_floors TO 10
@@ -80,6 +80,25 @@
     
 //Maximum load detection
 
+//Traffic hour
+
+    SEQUENCE traffic_set USING elevator_A AND elevator_B AND default_floor
+        IF hour IS between 7am AND 9am THEN
+            SET default_floor FOR elevator_A TO second floor
+            SET default_floor FOR elevator_B TO sixth floor
+        ELSE 
+            CALL default_floor
+        ENDIF
+        IF hour IS between 4pm and 6pm THEN 
+            SET default_floor FOR elevator_A TO first floor
+            SET default_floor FOR elevator_B TO first floor
+        ELSE 
+            CALL default_floor
+        ENDIF
+    ENDSEQUENCE
+
+//Traffic hour
+
 //Scene 1
 
     SEQUENCE origin
@@ -91,22 +110,20 @@
         SET floor_requested TO seventh floor
     ENDSEQUENCE
 
-    SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND elevator_A_movement
+    SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND elevator_A_movement AND user_emplacement AND open_doors
         CALL elevator RETURNING elevator_A
         RETURN elevator_A
         SET elevator_A_status TO Movement
         SET elevator_A_movement TO down
-    ENDSEQUENCE
-
-    SEQUENCE elevator_A_ready_to_pick_up_user USING elevator_A AND user_emplacement AND open_doors AND opening_doors
+        WHILE elevator in movement 
             READ number_floor
-                IF number_floor EQUAL user_emplacement THEN
-                    SET elevator_status TO IDLE
-                ELSE 
-                    SET elevator_status TO movement
-                ENDIF
-            CALL open_doors RETURNING opening_doors
-            RETURN opening_doors
+        ENDWHILE
+        IF number_floor EQUAL user_emplacement THEN
+            SET elevator_status TO IDLE
+        ELSE 
+            SET elevator_status TO movement
+        ENDIF
+        CALL open_doors
     ENDSEQUENCE
 
     SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door
@@ -119,32 +136,30 @@
                 STOP picking_up_user
                 DISPLAY "Maximum number of user achieved! No more passenger will be allowed!!"
             ENDIF
-            READ users is input
-            CALL security RETURNING 20 seconds
-            RETURN close_door      
-    ENDSEQUENCE
-
-    SEQUENCE elevator_in_action USING elevator_A_movement AND number_floor
-        SET elevator_A_movement TO up 
-        WHILE elevator in movement 
-            READ number_floor
-        ENDWHILE
-    ENDSEQUENCE
-
-    SEQUENCE elevator_arrived_to_destination USING elevator_A_movement AND open_doors 
-        READ number_floor
-        IF number_floor EQUAL floor_requested THEN 
-            SET elevator_A_status TO IDLE
-            SET open_doors TO TRUE
+            READ users is input TO wich_floor
             CALL security RETURNING 20 seconds
             RETURN close_door 
-        ELSE 
-            SET elevator_A_status TO movement
-        ENDIF
+            SET elevator_status TO movement
+            SET elevator_movement TO up
+            WHILE elevator in movement
+                READ number_floor
+            ENDWHILE
+            IF number_floor EQUAL floor_requested THEN
+                SET elvator_status TO IDLE
+                SET open_door TO TRUE
+                CALL security RETURNING 20 seconds
+                RETURN close_doors
+            ELSE 
+                SET elevator_status TO movement
+            ENDIF 
+            READ user input
+            IF input EQUAL FALSE THEN
+                CALL origin
+            ELSE 
+                CALL user_calling_button AND user_into_elevator
+            ENDIF
+
     ENDSEQUENCE
-
-    CALL origin
-
 
 //SCENE 1
 
