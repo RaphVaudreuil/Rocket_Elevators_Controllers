@@ -81,7 +81,7 @@
 
 //Scene 1
 
-    SEQUENCE parameters
+    SEQUENCE origin
         SET elevator_A_status TO IDLE
         SET elevator_A_emplacement TO second floor
         SET elevator_B_status TO IDLE
@@ -137,8 +137,7 @@
     ENDSEQUENCE
 
     SEQUENCE back_origin
-        SET default_floor_A TO second floor
-        CALL default_floor_A RETURNING second floor
+        CALL origin
     ENDSEQUENCE
 
 //SCENE 1
