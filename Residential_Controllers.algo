@@ -20,9 +20,7 @@
     ENDSEQUENCE
 
     SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND user_emplacement AND open_doors
-        SET user_emplacement TO third floor
-        CALL elevator RETURNING elevator_A
-        RETURN elevator_A
+        CALL elevator RETURNING elevator SORT BY ranking
         SET elevator_A_status TO Movement
         WHILE elevator in movement 
             READ number_floor
@@ -33,6 +31,7 @@
             SET elevator_status TO movement
         ENDIF
         CALL open_doors
+        RETURN opening_doors
     ENDSEQUENCE
 
     SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door AND security AND wich_floor AND elevator_status AND number_floor
