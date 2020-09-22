@@ -98,9 +98,14 @@
     ENDSEQUENCE
 
     SEQUENCE elevator_A_ready_to_pick_up_user USING elevator_A AND user_emplacement AND open_doors AND opening_doors
-            WHEN elevator_A  IS AT user_emplacement
-                CALL open_doors RETURNING opening_doors
-                RETURN opening_doors
+            READ number_floor
+                IF number_floor EQUAL user_emplacement THEN
+                    SET elevator_status TO IDLE
+                ELSE 
+                    SET elevator_status TO movement
+                ENDIF
+            CALL open_doors RETURNING opening_doors
+            RETURN opening_doors
     ENDSEQUENCE
 
     SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door
@@ -136,9 +141,8 @@
         ENDIF
     ENDSEQUENCE
 
-    SEQUENCE back_origin
-        CALL origin
-    ENDSEQUENCE
+    CALL origin
+
 
 //SCENE 1
 
