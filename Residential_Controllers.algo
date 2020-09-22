@@ -70,8 +70,9 @@
 //Maximum load detection
 
     SEQUENCE max_detection USING maximum_load
-        IF maximum_load EQUAL 1275 KG THEN
+        IF maximum_load >= 1275 KG THEN
             No more passenger accepted
+            DISPLAY "Maximum load exceed"
         ELSE
             Continue answering calling button
         ENDIF
@@ -116,6 +117,7 @@
             ELSE
                 SET red_light TO TRUE
                 STOP picking_up_user
+                DISPLAY "Maximum number of user achieved! No more passenger will be allowed!!"
             ENDIF
             READ users is input
             CALL security RETURNING 20 seconds
