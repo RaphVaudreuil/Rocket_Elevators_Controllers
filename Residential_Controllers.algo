@@ -14,6 +14,8 @@
         SET user_emplacement TO UNDEFINED
         SET wanted_floor TO UNDEFINED
         SET open_door TO FALSE
+        SET elevator_status TO IDLE
+        SET a delay of 20 seconds BEFORE closing the doors
     ENDSEQUENCE
 
 //Default parameters
@@ -21,7 +23,6 @@
 //External button function
 
     SEQUENCE external_button USING Elevator_A_emplacement AND Elevator_B_emplacement AND user_emplacement AND elevators_direction
-
         IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
             elevators_direction EQUAL up
         ELSE 
@@ -36,7 +37,6 @@
 //Internal button function
 
     SEQUENCE internal_button USING user_emplacement AND wanted_floor AND elevators_direction
-
         IF wanted_floor IS GREATER THAN user_emplacement THEN
             elevators_direction EQUAL up
         ELSE
@@ -54,6 +54,21 @@
     ENDSEQUENCE
 
 //Doors function
+
+//Back to origin function
+
+    SEQUENCE back_origin USING elevator_status AND default_floor AND elevator
+        IF elevator EQUAL TO elevator_status THEN
+            CALL default_floor
+        ELSE
+            SET elevator_status TO In Movement
+        ENDIF
+    ENDSEQUENCE
+
+//Back to origin function
+
+
+
 
         
 
