@@ -126,7 +126,7 @@
         CALL open_doors
     ENDSEQUENCE
 
-    SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door
+    SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door AND security AND wich_floor AND elevator_movement AND elevator_status AND number_floor
             READ total_weight
             IF total_weight <= 1275 KG THEN 
                 SET red_light TO FALSE
@@ -153,12 +153,11 @@
                 SET elevator_status TO movement
             ENDIF 
             READ user input
-            IF input EQUAL FALSE THEN
+            IF user input EQUAL FALSE THEN
                 CALL origin
             ELSE 
                 CALL user_calling_button AND user_into_elevator
             ENDIF
-
     ENDSEQUENCE
 
 //SCENE 1
