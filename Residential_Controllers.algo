@@ -113,7 +113,7 @@
         CALL elevator RETURNING elevator_A
         RETURN elevator_A
         SET elevator_A_status TO Movement
-        SET elevator_A_movement TO down
+        SET elevator_A_movement TO UP
         WHILE elevator in movement 
             READ number_floor
         ENDWHILE
