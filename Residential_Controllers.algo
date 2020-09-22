@@ -106,11 +106,10 @@
         SET elevator_A_emplacement TO second floor
         SET elevator_B_status TO IDLE
         SET elevator_B_emplacement TO sixth floor
-        SET user_emplacement TO third floor
-        SET floor_requested TO seventh floor
     ENDSEQUENCE
 
     SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND elevator_A_movement AND user_emplacement AND open_doors
+        SET user_emplacement TO third floor
         CALL elevator RETURNING elevator_A
         RETURN elevator_A
         SET elevator_A_status TO Movement
@@ -136,7 +135,7 @@
                 STOP picking_up_user
                 DISPLAY "Maximum number of user achieved! No more passenger will be allowed!!"
             ENDIF
-            READ users is input TO wich_floor
+            READ users is input TO floor_requested
             CALL security RETURNING 20 seconds
             RETURN close_door 
             SET elevator_status TO movement
