@@ -58,7 +58,7 @@
 //Back to origin function
 
     SEQUENCE back_origin USING elevator_status AND default_floor AND elevator
-        IF elevator EQUAL TO elevator_status THEN
+        IF elevator EQUAL elevator_status THEN
             CALL default_floor
         ELSE
             SET elevator_status TO In Movement
@@ -66,6 +66,18 @@
     ENDSEQUENCE
 
 //Back to origin function
+
+//Maximum load detection
+
+    SEQUENCE max_detection USING maximum_load
+        IF maximum_load EQUAL 1275 KG THEN
+            No more passenger accepted
+        ELSE
+            Continue answering calling button
+        ENDIF
+    ENDSEQUENCE
+//Maximum load detection
+
 
 
 
