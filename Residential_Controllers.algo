@@ -15,7 +15,7 @@
         SET wanted_floor TO UNDEFINED
         SET open_door TO FALSE
         SET elevator_status TO IDLE
-        SET a delay of 20 seconds BEFORE closing the doors
+        SET closing_doors TO a delay of 20 seconds
     ENDSEQUENCE
 
 //Default parameters
@@ -76,7 +76,52 @@
             Continue answering calling button
         ENDIF
     ENDSEQUENCE
+    
 //Maximum load detection
+
+//Scene 1
+
+    SEQUENCE parameters
+        SET elevator_A_status TO IDLE
+        SET elevator_A_emplacement TO second floor
+        SET elevator_B_status TO IDLE
+        SET elevator_B_emplacement TO sixth floor
+        SET user_emplacement TO third floor
+        SET floor_requested TO seventh floor
+    ENDSEQUENCE
+
+    SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND elevator_A_movement
+        CALL elevator RETURNING elevator_A
+        RETURN elevator_A
+        SET elevator_A_status TO Movement
+        SET elevator_A_movement TO down
+    ENDSEQUENCE
+
+    SEQUENCE elevator_A_ready_to_pick_up_user USING elevator_A AND user_emplacement AND open_doors AND opening_doors
+            WHEN elevator_A  IS AT user_emplacement
+                CALL open_doors RETURNING opening_doors
+                RETURN opening_doors
+    ENDSEQUENCE
+
+    SEQUENCE user_into_elevator
+            READ total_weight
+            IF total_weight <= 1275 KG THEN 
+                SET red_light TO FALSE
+                CONTINUE picking_up_user UNTIL total_weight EQUAL 1275 KG
+            ELSE
+                SET red_light TO TRUE
+                STOP picking_up_user
+            ENDIF
+            READ user is input
+            
+
+
+
+
+            
+
+
+
 
 
 
