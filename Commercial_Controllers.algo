@@ -1,2 +1,7 @@
 SET battery TO OFF
 SET floors TO 66
+SET basements TO 6
+SET column TO 4
+SET number_elevator TO 12
+SET elevator_status TO IDLE
+SET elevator_A AND elevator_B AND elevator_C TO column 1
