@@ -21,7 +21,11 @@
 
     SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND user_emplacement AND open_doors
         CALL elevator RETURNING elevator SORT BY ranking
-        SET elevator_status TO Movement
+        IF elevator_status EQUAL TO IDLE THEN 
+            SET elevator_status TO Movement
+        ELSE
+            READ user_emplacement
+        ENDIF
         WHILE elevator in movement 
             READ number_floor
             IF number_floor EQUAL user_emplacement THEN
