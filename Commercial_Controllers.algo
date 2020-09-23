@@ -71,6 +71,8 @@
             SET elevators TO origin
         ENDIF 
     ENDSEQUENCE
+//
+
 //Battery function
     SEQUENCE battery_function USING elevators AND battery
         IF elevators EQUAL function

@@ -137,7 +137,7 @@
 //Back to origin function
 
     SEQUENCE back_origin USING elevator_status AND default_floor AND elevator
-        IF elevator EQUAL elevator_status THEN
+        IF elevator_status EQUAL IDLE THEN
             CALL default_floor
         ELSE
             SET elevator_status TO In Movement
