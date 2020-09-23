@@ -31,7 +31,7 @@
 
     SEQUENCE user_calling_elevator_billboard USING number_column AND number_elevator AND user_input
         READ user is input 
-        RETURN number_column AND number_elevator
+        RETURN number_column AND number_elevator SORT by ranking
     ENDSEQUENCE
 
     SEQUENCE entering_elevator USING total_weight AND warning_alarm AND security AND close_doors AND elevators AND elevator_status AND number_floors
@@ -64,23 +64,22 @@
 
     SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
         IF user is on floor X AND want TO go TO floor Y THEN  
-            CALL elevator RETURNING elevator
+            CALL elevator RETURNING elevator SORT by ranking
             SET open_doors TO TRUE
              READ total_weight
-        IF total_weight >= 1500KG THEN
-            SET warning_alarm TO ON 
-            DISPLAY "Total Weight exceed! Please do not exceed 1 500KG"
-        ELSE
-            KEEP adding more user
-            READ security RETURNING 20 seconds
-            RETURN close_doors
-        ENDIF
-            READ security RETURNING 20 seconds
-            RETURN close_doors
+            IF total_weight >= 1500KG THEN
+                SET warning_alarm TO ON 
+                DISPLAY "Total Weight exceed! Please do not exceed 1 500KG"
+                STOP adding more user
+            ELSE
+                KEEP adding more user
+                READ security RETURNING 20 seconds
+                RETURN close_doors
+            ENDIF
             SET elevator_direction TO RC
             SET elevator_movement TO down
             READ number_floors
-            IF number_floors EQUAL RC THEN 
+            IF number_floors EQUAL RC AND requested_elevator THEN 
                 SET elevator_status TO IDLE
                 SET doors TO open
                 CALL security RETURNING 20 seconds
