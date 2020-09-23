@@ -66,6 +66,7 @@
                 IF user input EQUAL FALSE THEN
                     CALL origin
                     RETURN origin
+                    SET elevator_status TO IDLE
                 ELSE 
                     CALL user_calling_button AND user_into_elevator
                     RETURN user_calling_button AND user_into_elevator
