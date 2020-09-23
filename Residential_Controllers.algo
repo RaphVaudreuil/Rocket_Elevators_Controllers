@@ -24,14 +24,14 @@
         SET elevator_A_status TO Movement
         WHILE elevator in movement 
             READ number_floor
+            IF number_floor EQUAL user_emplacement THEN
+                SET elevator_status TO IDLE
+                CALL open_doors
+                RETURN opening_doors
+            ELSE 
+                SET elevator_status TO movement
+            ENDIF
         ENDWHILE
-        IF number_floor EQUAL user_emplacement THEN
-            SET elevator_status TO IDLE
-        ELSE 
-            SET elevator_status TO movement
-        ENDIF
-        CALL open_doors
-        RETURN opening_doors
     ENDSEQUENCE
 
     SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door AND security AND wich_floor AND elevator_status AND number_floor
@@ -50,21 +50,21 @@
             SET elevator_status TO movement
             WHILE elevator in movement
                 READ number_floor
+                IF number_floor EQUAL floor_requested THEN
+                    SET elvator_status TO IDLE
+                    SET open_door TO TRUE
+                    CALL security RETURNING 20 seconds
+                    RETURN close_doors
+                ELSE 
+                    SET elevator_status TO movement
+                ENDIF 
+                READ user input
+                IF user input EQUAL FALSE THEN
+                    CALL origin
+                ELSE 
+                    CALL user_calling_button AND user_into_elevator
+                ENDIF
             ENDWHILE
-            IF number_floor EQUAL floor_requested THEN
-                SET elvator_status TO IDLE
-                SET open_door TO TRUE
-                CALL security RETURNING 20 seconds
-                RETURN close_doors
-            ELSE 
-                SET elevator_status TO movement
-            ENDIF 
-            READ user input
-            IF user input EQUAL FALSE THEN
-                CALL origin
-            ELSE 
-                CALL user_calling_button AND user_into_elevator
-            ENDIF
     ENDSEQUENCE
 
 //SCENE 1
