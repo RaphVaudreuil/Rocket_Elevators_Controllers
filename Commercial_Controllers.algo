@@ -103,6 +103,22 @@
         ENDIF
 //
 
+//PSEUDOCODE
+
+    SEQUENCE origin
+        SET battery TO OFF
+        SET elevator_status TO IDLE
+        SET elevator_A AND elevator_B AND elevator_C TO column 1
+        SET elevator_D AND elevator_E AND elevator F TO column 2
+        SET elevator_G AND elevator_H AND elevator_I TO column 3
+        SET elevator_J AND elevator_K AND elevator_L TO column 4
+        SET column_1 TO SS1 TO SS6 ADD RC
+        SET column_2 TO floor_2 TO 20 ADD RC
+        SET column_3 TO floor_21 TO 40 ADD RC
+        SET column_4 TO floor_41 TO 60 ADD RC
+    ENDSEQUENCE
+    
+
 
 
 
