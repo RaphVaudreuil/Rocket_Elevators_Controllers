@@ -7,10 +7,10 @@
         SET elevator_D AND elevator_E AND elevator F TO column 2
         SET elevator_G AND elevator_H AND elevator_I TO column 3
         SET elevator_J AND elevator_K AND elevator_L TO column 4
-        SET column_1 TO SS1 TO SS6 ADD RC
-        SET column_2 TO floor_2 TO 20 ADD RC
-        SET column_3 TO floor_21 TO 40 ADD RC
-        SET column_4 TO floor_41 TO 60 ADD RC
+        SET column_1 TO SS1 TO SS6 ADD ground_floor
+        SET column_2 TO floor_2 TO 20 ADD ground_floor
+        SET column_3 TO floor_21 TO 40 ADD ground_floor
+        SET column_4 TO floor_41 TO 60 ADD ground_floor
         IF hour EQUAL 7am TO 9am THEN
             SET elevators TO rush_hour
         ELSE 
@@ -76,10 +76,10 @@
                 READ security RETURNING 20 seconds
                 RETURN close_doors
             ENDIF
-            SET elevator_direction TO RC
+            SET elevator_direction TO ground_floor
             SET elevator_movement TO down
             READ number_floors
-            IF number_floors EQUAL RC AND requested_elevator THEN 
+            IF number_floors EQUAL ground_floor AND requested_elevator THEN 
                 SET elevator_status TO IDLE
                 SET doors TO open
                 CALL security RETURNING 20 seconds
@@ -109,11 +109,11 @@
     SET elevator_D AND elevator_E AND elevator F TO column 2
     SET elevator_G AND elevator_H AND elevator_I TO column 3
     SET elevator_J AND elevator_K AND elevator_L TO column 4
-    SET column_1 TO SS1 TO SS6 ADD RC
-    SET RC equal floor_1
-    SET column_2 TO floor_2 TO 20 ADD RC
-    SET column_3 TO floor_21 TO 40 ADD RC
-    SET column_4 TO floor_41 TO 60 ADD RC
+    SET column_1 TO SS1 TO SS6 ADD ground_floor
+    SET ground_floor equal floor_1
+    SET column_2 TO floor_2 TO 20 ADD ground_floor
+    SET column_3 TO floor_21 TO 40 ADD ground_floor
+    SET column_4 TO floor_41 TO 60 ADD ground_floor
 
     
 //Billboard function
@@ -127,10 +127,10 @@
     SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
         IF user is on floor 16 AND want TO go TO another floor THEN  
             CALL elevator RETURNING elevator
-            SET elevator_direction TO RC
+            SET elevator_direction TO ground_floor
             SET elevator_movement TO down
             READ number_floors
-            IF number_floors EQUAL RC THEN 
+            IF number_floors EQUAL ground_floor THEN 
                 SET elevator_status TO IDLE
                 SET doors TO open
                 CALL security RETURNING 20 seconds
@@ -155,7 +155,7 @@
 //Door function
     SEQUENCE door_function USING open_door AND close_door AND user_emplacement AND security
         SET open_door TO FALSE 
-        SET open_door TO TRUE if elevator EQUAL RC AND user_emplacement
+        SET open_door TO TRUE if elevator EQUAL ground_floor AND user_emplacement
         CALL security RETURNING 20 seconds 
         RETURN close_door
     ENDSEQUENCE
