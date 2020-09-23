@@ -1,4 +1,4 @@
-//Scene 1
+//PSEUDOCODE
 
     SEQUENCE origin
         SET elevator_A_status TO IDLE
@@ -73,7 +73,7 @@
             ENDWHILE
     ENDSEQUENCE
 
-//SCENE 1
+//PSEUDOCODE
 
 
 
