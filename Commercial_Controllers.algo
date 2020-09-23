@@ -30,10 +30,19 @@
             CALL elevator RETURNING elevator
             SET elevator_direction TO RC
             SET elevator_movement TO down
-            CALL Billboard
+            READ number_floors
+            IF number_floors EQUAL RC THEN 
+                SET elevator_status TO IDLE
+                SET doors TO open
+                CALL security RETURNING 20 seconds
+                RETURN close_doors
+            ELSE 
+                SET elevator_status TO movement
+            ENDIF
         ELSE 
             BREAK
         ENDIF
+        CALL billboard
     ENDSEQUENCE
 //
 
@@ -167,7 +176,37 @@
         RETURN elevator TO origin
     ENDSEQUENCE 
 
-    SEQUENCE user_already_on_floor
+    SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
+        IF user is on floor X AND want TO go TO floor Y THEN  
+            CALL elevator RETURNING elevator
+            SET open_doors TO TRUE
+             READ total_weight
+        IF total_weight >= 1500KG THEN
+            SET warning_alarm TO ON 
+            DISPLAY "Total Weight exceed! Please do not exceed 1 500KG"
+        ELSE
+            KEEP adding more user
+            READ security RETURNING 20 seconds
+            RETURN close_doors
+        ENDIF
+            READ security RETURNING 20 seconds
+            RETURN close_doors
+            SET elevator_direction TO RC
+            SET elevator_movement TO down
+            READ number_floors
+            IF number_floors EQUAL RC THEN 
+                SET elevator_status TO IDLE
+                SET doors TO open
+                CALL security RETURNING 20 seconds
+                RETURN close_doors
+            ELSE 
+                SET elevator_status TO movement
+            ENDIF
+        ELSE 
+            BREAK
+        ENDIF
+        CALL user_calling_elevator_billboard AND entering_elevator
+    ENDSEQUENCE
 
 
 
