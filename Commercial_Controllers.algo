@@ -19,7 +19,7 @@
     
 //Billboard function
     READ user is input
-    RETURN column AND elevator
+    RETURN number_column AND number_elevator
 //
 
 //If the user is on floor 16 and want to go to another floor
@@ -35,6 +35,15 @@
     READ number_floors
     RETURN number_floors
 //
+
+//Door function
+    SET open_door TO FALSE 
+    SET open_door TO TRUE if elevator EQUAL RC AND user_emplacement
+    CALL security RETURNING 20 seconds 
+    RETURN close_door
+//
+
+
 
 
 
