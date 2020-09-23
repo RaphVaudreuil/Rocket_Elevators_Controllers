@@ -83,6 +83,25 @@
     ENDSEQUENCE
 //
 
+//Back to origin
+    SEQUENCE back_origin
+        IF elevator_status EQUAL IDLE THEN
+            CALL origin
+        ELSE 
+            SET elevator_status TO movement
+        ENDIF
+    ENDSEQUENCE
+//
+
+//Maximum load detection
+    IF weight >= 1500KG THEN
+        CALL security RETURNING 20 seconds
+        RETURN close_doors
+            DISPLAY "Maximum load exceed"
+        ELSE
+            Continue picking up users
+        ENDIF
+//
 
 
 
