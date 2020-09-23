@@ -18,29 +18,39 @@
 
     
 //Billboard function
-    READ user is input
-    RETURN number_column AND number_elevator
+    SEQUENCE Billboard USING number_column AND number_elevator AND user_input
+        READ user is input
+        RETURN number_column AND number_elevator
+    ENDSEQUENCE
 //
 
 //If the user is on floor 16 and want to go to another floor
-    CALL elevator RETURNING elevator
-    SET elevator_status TO RC
-    SET elevator_movement TO down
-    CALL Billboard
-    ELSE BREAK
-    ENDIF
+    SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
+        IF user is on floor 16 AND want TO go TO another floor THEN  
+            CALL elevator RETURNING elevator
+            SET elevator_direction TO RC
+            SET elevator_movement TO down
+            CALL Billboard
+        ELSE 
+            BREAK
+        ENDIF
+    ENDSEQUENCE
 //
 
 //Floor display function in the elevator
-    READ number_floors
-    RETURN number_floors
+    SEQUENCE floor_display_elevator USING number_floors
+        READ number_floors
+        RETURN number_floors
+    ENDSEQUENCE
 //
 
 //Door function
-    SET open_door TO FALSE 
-    SET open_door TO TRUE if elevator EQUAL RC AND user_emplacement
-    CALL security RETURNING 20 seconds 
-    RETURN close_door
+    SEQUENCE door_function USING open_door AND close_door AND user_emplacement AND security
+        SET open_door TO FALSE 
+        SET open_door TO TRUE if elevator EQUAL RC AND user_emplacement
+        CALL security RETURNING 20 seconds 
+        RETURN close_door
+    ENDSEQUENCE
 //
 
 
