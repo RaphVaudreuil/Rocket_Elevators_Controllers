@@ -81,8 +81,8 @@
 //Default parameters
     
     SEQUENCE parameters
-        SET default_floor FOR elevator A TO UNDEFINED
-        SET default_floor FOR elevator B TO UNDEFINED
+        SET default_floor_A TO UNDEFINED
+        SET default_floor_B TO UNDEFINED
         SET number_of_elevators TO 2
         SET number_of_column TO 1
         SET number_of_floors TO 10
@@ -95,24 +95,71 @@
         SET wanted_floor TO UNDEFINED
         SET open_door TO FALSE
         SET elevator_status TO IDLE
-        SET closing_doors TO a delay of 20 seconds
+        SET column TO off
+        SET security TO decrement OF 20 seconds
     ENDSEQUENCE
 
 //Default parameters
 
+//Traffic hour
+
+    SEQUENCE traffic_set USING elevator_A AND elevator_B AND default_floor
+        IF hour EQUAL 7am TO 9am THEN
+            SET default_floor FOR elevator_A TO second floor
+            SET default_floor FOR elevator_B TO sixth floor
+        ELSE 
+            CALL default_floor_A AND default_floor_B
+        ENDIF
+        IF hour EQUAL 4pm TO 6pm THEN 
+            SET default_floor FOR elevator_A TO first floor
+            SET default_floor FOR elevator_B TO first floor
+        ELSE 
+            CALL default_floor_A AND default_floor_B
+        ENDIF
+    ENDSEQUENCE
+
+//Traffic hour
+
+//Open doors function
+
+    SEQUENCE open_doors USING default_floor AND user_emplacement
+        SET open_doors TO TRUE IF elevator EQUAL default_floor_A AND default_floor_B AND user_emplacement
+    ENDSEQUENCE
+
+//Open doors function
+
+//Close doors function
+
+    SEQUENCE close_doors USING security
+        CALL security THEN SET close_doors TO TRUE
+    ENDSEQUENCE
+
+//Close doors function
+
 //External button function
 
     SEQUENCE external_button USING Elevator_A_emplacement AND Elevator_B_emplacement AND user_emplacement AND elevators_direction
-        IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
-            elevators_direction EQUAL up
-        ELSE 
-            elevators_direction EQUAL down
-        ENDIF
+        WHILE user click the button
+            CALL elevator TO user_emplacement RETURNING elevator SORT by ranking
+            SET column TO ON
+            SET elevator_status TO ON
+            IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
+                SET elevators_direction TO up
+            ELSE 
+                SET elevators_direction TO down
+            ENDIF
+            READ current_floor
+            IF current_floor EQUAL user_emplacement
+                SET elevator_status TO IDLE
+            ELSE 
+                CONTINUE UNTIL current_floor EQUAL user_emplacement
+            ENDIF
+        ENDWHILE
         CALL open_door
-        CALL close_door 
     ENDSEQUENCE
 
 //External button function
+
 
 //Internal button function
 
@@ -126,14 +173,6 @@
     ENDSEQUENCE
 
 //Internal button function
-
-//Doors function
-
-    SEQUENCE open_door USING default_floor AND user_emplacement
-        SET open_door TO TRUE IF elevator EQUAL default_floor AND user_emplacement
-    ENDSEQUENCE
-
-//Doors function
 
 //Back to origin function
 
@@ -159,23 +198,3 @@
     ENDSEQUENCE
     
 //Maximum load detection
-
-//Traffic hour
-
-    SEQUENCE traffic_set USING elevator_A AND elevator_B AND default_floor
-        IF hour IS between 7am AND 9am THEN
-            SET default_floor FOR elevator_A TO second floor
-            SET default_floor FOR elevator_B TO sixth floor
-        ELSE 
-            CALL default_floor
-        ENDIF
-        IF hour IS between 4pm and 6pm THEN 
-            SET default_floor FOR elevator_A TO first floor
-            SET default_floor FOR elevator_B TO first floor
-        ELSE 
-            CALL default_floor
-        ENDIF
-    ENDSEQUENCE
-
-//Traffic hour
-
