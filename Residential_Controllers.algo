@@ -81,8 +81,8 @@
 //Default parameters
     
     SEQUENCE parameters
-        SET default_floor_A TO UNDEFINED
-        SET default_floor_B TO UNDEFINED
+        SET default_elevator_A TO UNDEFINED
+        SET default_elevator_B TO UNDEFINED
         SET number_of_elevators TO 2
         SET number_of_column TO 1
         SET number_of_floors TO 10
@@ -105,16 +105,16 @@
 
     SEQUENCE traffic_set USING elevator_A AND elevator_B AND default_floor
         IF hour EQUAL 7am TO 9am THEN
-            SET default_floor FOR elevator_A TO second floor
-            SET default_floor FOR elevator_B TO sixth floor
+            SET default_elevator_A TO second floor
+            SET default_elevator_B TO sixth floor
         ELSE 
-            CALL default_floor_A AND default_floor_B
+            CALL default_elevator_A AND default_elevator_B
         ENDIF
         IF hour EQUAL 4pm TO 6pm THEN 
-            SET default_floor FOR elevator_A TO first floor
-            SET default_floor FOR elevator_B TO first floor
+            SET default_elevator_A TO first floor
+            SET default_elevator_B FOR elevator_B TO first floor
         ELSE 
-            CALL default_floor_A AND default_floor_B
+            CALL default_elevator_A AND default_elevator_B
         ENDIF
     ENDSEQUENCE
 
@@ -140,7 +140,8 @@
 
     SEQUENCE external_button USING Elevator_A_emplacement AND Elevator_B_emplacement AND user_emplacement AND elevators_direction
         WHILE user click the button
-            CALL elevator TO user_emplacement RETURNING elevator SORT by ranking
+            READ user is input RETURNING user_emplacement
+            CALL elevator RETURNING elevator SORT by ranking
             SET column TO ON
             SET elevator_status TO ON
             IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
@@ -152,7 +153,7 @@
             IF current_floor EQUAL user_emplacement
                 SET elevator_status TO IDLE
             ELSE 
-                CONTINUE UNTIL current_floor EQUAL user_emplacement
+                CONTINUE UNTIL current_floor EQUAL user_emplacement THEN SET elevators_status TO IDLE
             ENDIF
         ENDWHILE
         CALL open_door
@@ -163,13 +164,10 @@
 
 //Internal button function
 
-    SEQUENCE internal_button USING user_emplacement AND wanted_floor AND elevators_direction
-        IF wanted_floor IS GREATER THAN user_emplacement THEN
-            elevators_direction EQUAL up
-        ELSE
-            elevators_direction EQUAL down
-        ENDIF
-        CALL close_door 
+    SEQUENCE internal_button USING wanted_floor
+        WHILE internal_button IS clicked
+            READ user is input RETURNING wanted_floor
+        ENDWHILE
     ENDSEQUENCE
 
 //Internal button function
