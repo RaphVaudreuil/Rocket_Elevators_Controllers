@@ -16,5 +16,27 @@
     SET column_3 TO floor_21 TO 40 ADD RC
     SET column_4 TO floor_41 TO 60 ADD RC
 
+    
+//Billboard function
+    READ user is input
+    RETURN column AND elevator
+//
+
+//If the user is on floor 16 and want to go to another floor
+    CALL elevator RETURNING elevator
+    SET elevator_status TO RC
+    SET elevator_movement TO down
+    CALL Billboard
+    ELSE BREAK
+    ENDIF
+//
+
+//Floor display function in the elevator
+    READ number_floors
+    RETURN number_floors
+//
+
+
+
 
 
