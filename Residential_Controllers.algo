@@ -103,13 +103,16 @@
 
 //Traffic hour
 
-    SEQUENCE traffic_set USING elevator_A AND elevator_B AND default_floor
+    SEQUENCE traffic_set_1 USING default_elevator_A AND default_elevator_B
         IF hour EQUAL 7am TO 9am THEN
             SET default_elevator_A TO second floor
             SET default_elevator_B TO sixth floor
         ELSE 
             CALL default_elevator_A AND default_elevator_B
         ENDIF
+    ENDSEQUENCE
+
+    SEQUENCE traffic_set_2 USING default_elevator_A AND default_elevator_B
         IF hour EQUAL 4pm TO 6pm THEN 
             SET default_elevator_A TO first floor
             SET default_elevator_B FOR elevator_B TO first floor
