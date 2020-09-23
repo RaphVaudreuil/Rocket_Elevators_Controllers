@@ -147,8 +147,8 @@
 
 //Floor display function in the elevator
     SEQUENCE floor_display_elevator USING number_floors
-        READ number_floors
-        RETURN number_floors
+        READ current_floors
+        RETURN current_floors
     ENDSEQUENCE
 //
 
