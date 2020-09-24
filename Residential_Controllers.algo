@@ -57,9 +57,9 @@
             SET column TO ON
             SET elevator_status TO ON
             IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
-                SET elevators_direction TO up
+                SET elevators_direction TO UP
             ELSE 
-                SET elevators_direction TO down
+                SET elevators_direction TO DOWN
             ENDIF
             READ current_floor
             IF current_floor EQUAL user_emplacement
@@ -132,9 +132,9 @@
         ENDWHILE
         CALL close_doors
         IF user_emplacement IS GREATER THAN wanted_floor THEN
-            SET elevators_direction TO down
+            SET elevators_direction TO DOWN
         ELSE 
-            SET elevators_direction TO up
+            SET elevators_direction TO UP
         ENDIF
         WHILE elevator in movement
             READ current_floor
