@@ -107,7 +107,7 @@
     SET number_elevator TO 12
     SET elevator_status TO IDLE
     SET elevator_A AND elevator_B AND elevator_C TO column 1
-    SET elevator_D AND elevator_E AND elevator F TO column 2
+    SET elevator_D AND elevator_E AND elevator_F TO column 2
     SET elevator_G AND elevator_H AND elevator_I TO column 3
     SET elevator_J AND elevator_K AND elevator_L TO column 4
     SET column_1 TO basement_1 TO basement_6 ADD ground_floor
@@ -135,7 +135,7 @@
 //Billboard function
     SEQUENCE Billboard USING column AND elevator AND user_input
         READ user is input RETURNING wanted_floor
-        RETURN CALL return_column AND elevator
+        RETURN CALL return_column AND return_elevator
     ENDSEQUENCE
 //
 
@@ -154,6 +154,21 @@
     ENDSEQUENCE
 //
 
+//Returning elevator to the billaboard
+    SEQUENCE return_elevator
+        CASE user is input OF 
+            wanted_floor EQUAL basement_1 TO basement_6 :
+                RETURN elevator_A OR elevator_B OR elevator_C
+            wanted_floor EQUAL floor_2 TO floor_20 :
+                RETURN elevator_D OR elevator_E OR elevator_F
+            wanted_floor EQUAL floor_21 TO floor_40 :
+                RETURN elevator_G OR elevator_H OR elevator_I
+            wanted_floor EQUAL floor_41 TO floor_60 :
+                RETURN elevator_J OR elevator_K OR elevator_L
+        ENDCASE
+    ENDSEQUENCE
+//
+
 
 //If the user is on floor X and want to go to floor Y
     SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
@@ -167,7 +182,7 @@
                 CALL open_doors
                 CALL close_doors
             ELSE 
-                SET elevator_status TO movement
+                CONTINUE until current_floors EQUAL ground_floor
             ENDIF
         ELSE 
             BREAK
@@ -320,22 +335,24 @@ SEQUENCE return_current_floor USING current_floor AND basement AND floor
     ENDCASE
 ENDSEQUENCE
 
-
-
-
-
-
-
-
-
-//Door function
-    SEQUENCE door_function USING open_door AND close_door AND user_emplacement AND security
-        SET open_door TO FALSE 
-        SET open_door TO TRUE if elevator EQUAL ground_floor AND user_emplacement
-        CALL security RETURNING 20 seconds 
-        RETURN close_door
-    ENDSEQUENCE
 //
+
+
+//Open doors function
+
+    SEQUENCE open_doors USING default_floor AND user_emplacement
+        SET open_doors TO TRUE IF elevator EQUAL default_floor_A AND default_floor_B AND user_emplacement
+    ENDSEQUENCE
+
+//Open doors function
+
+//Close doors function
+
+    SEQUENCE close_doors USING security
+        CALL security THEN SET close_doors TO TRUE
+    ENDSEQUENCE
+
+//Close doors function
 
 // Trafic hour 
     SEQUENCE trafic_hour USING elevators AND rush_hour AND origin
@@ -372,17 +389,23 @@ ENDSEQUENCE
         IF elevator_status EQUAL IDLE THEN
             CALL origin
         ELSE 
-            SET elevator_status TO movement
+            elevator_status EQUAL movement
         ENDIF
     ENDSEQUENCE
 //
 
 //Maximum load detection
-    IF weight >= 1500KG THEN
-        CALL security RETURNING 20 seconds
-        RETURN close_doors
-            DISPLAY "Maximum load exceed"
+
+    SEQUENCE max_detection USING maximum_load
+        READ total_weight
+        IF total_weight EQUAL 1500 KG THEN 
+            SET red_light TO TRUE
+            STOP picking up user
+            DISPLAY "Maximum number of user achieved! No more passenger will be allowed!!"
         ELSE
-            Continue picking up users
+            SET red_light TO FALSE
+            CONTINUE picking up user
         ENDIF
-//
+    ENDSEQUENCE
+    
+//Maximum load detection
