@@ -1,7 +1,8 @@
 //PSEUDOCODE
 
     SEQUENCE origin
-        SET battery TO ON
+        SET column_1 AND column_2 AND column_3 AND column_4 TO battery
+        SET battery TO OFF
         SET elevator_status TO IDLE
         SET elevator_A AND elevator_B AND elevator_C TO column 1
         SET elevator_D AND elevator_E AND elevator F TO column 2
@@ -178,14 +179,14 @@
 //Floor display function in the elevator
     SEQUENCE floor_display_elevator USING current_floors
         READ current_floors
-        RETURN current_floors
+        RETURN CALL current_floor_display
     ENDSEQUENCE
 //
 
-//
+SEQUENCE return_current_floor USING current_floor AND basement AND floor
     CASE diplay current floor
-        current_floors EQUAL floor_1
-            RETURN floor_1
+        current_floors EQUAL ground_floor
+            RETURN ground_floor
         current_floors EQUAL floor_2
             RETURN floor_2
         current_floors EQUAL floor_3
@@ -194,6 +195,138 @@
             RETURN floor_4
         current_floors EQUAL floor_5
             RETURN floor_5
+        current_floors EQUAL floor_6
+            RETURN floor_6
+        current_floors EQUAL floor_7
+            RETURN floor_7
+        current_floors EQUAL floor_8
+            RETURN floor_8
+        current_floors EQUAL floor_9
+            RETURN floor_9
+        current_floors EQUAL floor_10
+            RETURN floor_10
+        current_floors EQUAL floor_11
+            RETURN floor_11
+        current_floors EQUAL floor_12
+            RETURN floor_12
+        current_floors EQUAL 13
+            RETURN floor_13
+        current_floors EQUAL floor_14
+            RETURN floor_14
+        current_floors EQUAL floor_15
+            RETURN floor_15
+        current_floors EQUAL floor_16
+            RETURN floor_16
+        current_floors EQUAL floor_17
+            RETURN floor_17
+        current_floors EQUAL floor_18
+            RETURN floor_18
+        current_floors EQUAL floor_19
+            RETURN floor_19
+        current_floors EQUAL floor_20
+            RETURN floor_20
+        current_floors EQUAL floor_21
+            RETURN floor_21
+        current_floors EQUAL floor_22
+            RETURN floor_22
+        current_floors EQUAL floor_23
+            RETURN floor_23
+        current_floors EQUAL floor_24
+            RETURN floor_24
+        current_floors EQUAL floor_25
+            RETURN floor_25
+        current_floors EQUAL floor_26
+            RETURN floor_26
+        current_floors EQUAL floor_27
+            RETURN floor_27
+        current_floors EQUAL floor_28
+            RETURN floor_28
+        current_floors EQUAL floor_29
+            RETURN floor_29
+        current_floors EQUAL floor_30
+            RETURN floor_30
+        current_floors EQUAL floor_31
+            RETURN floor_31
+        current_floors EQUAL floor_32
+            RETURN floor_32
+        current_floors EQUAL floor_33
+            RETURN floor_33
+        current_floors EQUAL floor_34
+            RETURN floor_34
+        current_floors EQUAL floor_35
+            RETURN floor_35
+        current_floors EQUAL floor_36
+            RETURN floor_36
+        current_floors EQUAL floor_37
+            RETURN floor_37
+        current_floors EQUAL floor_38
+            RETURN floor_38
+        current_floors EQUAL floor_39
+            RETURN floor_39
+        current_floors EQUAL floor_40
+            RETURN floor_40
+        current_floors EQUAL floor_41
+            RETURN floor_41
+        current_floors EQUAL floor_42
+            RETURN floor_42
+        current_floors EQUAL floor_43
+            RETURN floor_43
+        current_floors EQUAL floor_44
+            RETURN floor_44
+        current_floors EQUAL floor_45
+            RETURN floor_45
+        current_floors EQUAL floor_46
+            RETURN floor_46
+        current_floors EQUAL floor_47
+            RETURN floor_47
+        current_floors EQUAL floor_48
+            RETURN floor_48
+        current_floors EQUAL floor_49
+            RETURN floor_49
+        current_floors EQUAL floor_50
+            RETURN floor_50
+        current_floors EQUAL floor_51
+            RETURN floor_51
+        current_floors EQUAL floor_52
+            RETURN floor_52
+        current_floors EQUAL floor_53
+            RETURN floor_53
+        current_floors EQUAL floor_54
+            RETURN floor_54
+        current_floors EQUAL floor_55
+            RETURN floor_55
+        current_floors EQUAL floor_56
+            RETURN floor_56
+        current_floors EQUAL floor_57
+            RETURN floor_57
+        current_floors EQUAL floor_58
+            RETURN floor_58
+        current_floors EQUAL floor_59
+            RETURN floor_59
+        current_floors EQUAL floor_60
+            RETURN floor_60
+        current_floors EQUAL basement_1
+            RETURN basement_1
+        current_floors EQUAL basement_2
+            RETURN basement_2
+        current_floors EQUAL basement_3
+            RETURN basement_3
+        current_floors EQUAL basement_4
+            RETURN basement_4
+        current_floors EQUAL basement_5
+            RETURN basement_5
+        current_floors EQUAL basement_6
+            RETURN basement_6
+    ENDCASE
+ENDSEQUENCE
+
+
+
+
+
+
+
+
 
 //Door function
     SEQUENCE door_function USING open_door AND close_door AND user_emplacement AND security
