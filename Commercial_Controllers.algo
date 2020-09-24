@@ -354,25 +354,6 @@ ENDSEQUENCE
 
 //Close doors function
 
-// Trafic hour 
-    SEQUENCE trafic_hour USING elevators AND rush_hour AND origin
-        IF hour EQUAL 7am TO 9am THEN
-            SET elevators TO rush_hour
-        ELSE 
-            SET elevators TO origin
-        ENDIF 
-        IF hour EQUAL 11am TO 1pm THEN
-            SET elevators TO rush_hour
-        ELSE 
-            SET elevators TO origin
-        ENDIF 
-        IF hour EQUAL 4pm TO 6pm THEN
-            SET elevators TO rush_hour
-        ELSE 
-            SET elevators TO origin
-        ENDIF 
-    ENDSEQUENCE
-//
 
 //Battery function
     SEQUENCE battery_function USING elevators AND battery
