@@ -1,83 +1,3 @@
-//PSEUDOCODE
-
-    SEQUENCE origin
-        SET elevator_A_status TO IDLE
-        SET elevator_A_emplacement TO UNDEFINED
-        SET elevator_B_status TO IDLE
-        SET elevator_B_emplacement TO UNDEFINED
-        IF hour IS between 7am AND 9am THEN
-            SET default_floor FOR elevator_A TO second floor
-            SET default_floor FOR elevator_B TO sixth floor
-        ELSE 
-            CALL elevator_A_emplacement AND elevator_B_emplacement
-        ENDIF
-        IF hour IS between 4pm and 6pm THEN 
-            SET default_floor FOR elevator_A TO first floor
-            SET default_floor FOR elevator_B TO first floor
-        ELSE 
-            CALL elevator_A_emplacement AND elevator_B_emplacement
-        ENDIF
-    ENDSEQUENCE
-
-    SEQUENCE user_calling_button USING elevator AND elevator_A AND elevator_A_status AND user_emplacement AND open_doors
-        CALL elevator TO user_emplacement RETURNING elevator SORT BY ranking 
-        IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
-            elevators_direction EQUAL up
-        ELSE 
-            elevators_direction EQUAL down
-        ENDIF
-        WHILE elevator in movement 
-            READ number_floor
-            IF number_floor EQUAL user_emplacement THEN
-                SET elevator_status TO IDLE
-                CALL open_doors
-                RETURN opening_doors
-            ELSE 
-                SET elevator_status TO movement
-            ENDIF
-        ENDWHILE
-    ENDSEQUENCE
-
-    SEQUENCE user_into_elevator USING total_weight AND red_light AND picking_up_user AND close_door AND security AND wich_floor AND elevator_status AND number_floor
-            READ total_weight
-            IF total_weight <= 1275 KG THEN 
-                SET red_light TO FALSE
-                CONTINUE picking up user
-            ELSE
-                SET red_light TO TRUE
-                STOP picking up user
-                DISPLAY "Maximum number of user achieved! No more passenger will be allowed!!"
-            ENDIF
-            READ users is input TO floor_requested
-            CALL security RETURNING 20 seconds
-            RETURN close_door 
-            SET elevator_status TO movement
-            WHILE elevator in movement
-                READ number_floor
-                IF number_floor EQUAL floor_requested THEN
-                    SET elvator_status TO IDLE
-                    SET open_door TO TRUE
-                    CALL security RETURNING 20 seconds
-                    RETURN close_doors
-                ELSE 
-                    SET elevator_status TO movement
-                ENDIF 
-                READ user input
-                IF user input EQUAL FALSE THEN
-                    CALL origin
-                    RETURN origin
-                    SET elevator_status TO IDLE
-                ELSE 
-                    CALL user_calling_button AND user_into_elevator
-                    RETURN user_calling_button AND user_into_elevator
-                ENDIF
-            ENDWHILE
-    ENDSEQUENCE
-
-//PSEUDOCODE
-
-
-
 //Default parameters
     
     SEQUENCE parameters
@@ -97,31 +17,21 @@
         SET column TO OFF
         SET security TO decrement OF 20 seconds
         SET security_movement TO OFF
-    ENDSEQUENCE
-
-//Default parameters
-
-//Traffic hour
-
-    SEQUENCE traffic_set_1 USING default_elevator_A AND default_elevator_B
         IF hour EQUAL 7am TO 9am THEN
             SET default_elevator_A TO second floor
             SET default_elevator_B TO sixth floor
         ELSE 
-            CALL default_elevator_A AND default_elevator_B
+             CALL default_elevator_A AND default_elevator_B
         ENDIF
-    ENDSEQUENCE
-
-    SEQUENCE traffic_set_2 USING default_elevator_A AND default_elevator_B
-        IF hour EQUAL 4pm TO 6pm THEN 
-            SET default_elevator_A TO first floor
-            SET default_elevator_B FOR elevator_B TO first floor
+        IF hour EQUAL 4pm TO 6pm THEN
+            SET default_elevator_A TO second floor
+            SET default_elevator_B TO sixth floor
         ELSE 
-            CALL default_elevator_A AND default_elevator_B
+             CALL default_elevator_A AND default_elevator_B
         ENDIF
     ENDSEQUENCE
 
-//Traffic hour
+//Default parameters
 
 //Open doors function
 
@@ -189,11 +99,7 @@
 //Back to origin function
 
     SEQUENCE back_origin USING elevator_status AND default_floor AND elevator
-        IF elevator_status EQUAL IDLE THEN
-            CALL default_elevator_A AND default_elevator_B
-        ELSE
-            elevator_status EQUAL in use
-        ENDIF
+        CALL default_elevator_A AND default_elevator_B IF elevator_status EQUAL IDLE FOR more THAN 10 minutes
     ENDSEQUENCE
 
 //Back to origin function
@@ -213,3 +119,38 @@
     ENDSEQUENCE
     
 //Maximum load detection
+
+//MAIN PROGRAM
+    SEQUENCE main_program
+        WHILE user press external button
+            CALL external_button
+        ENDWHILE
+        WHILE user enter in the elevator
+            CALL security_movement
+            CALL maximum_load
+            CALL external_button
+        ENDWHILE
+        CALL close_doors
+        IF user_emplacement IS GREATER THAN wanted_floor THEN
+            SET elevators_direction TO down
+        ELSE 
+            SET elevators_direction TO up
+        ENDIF
+        WHILE elevator in movement
+            READ current_floor
+            IF current_floor EQUAL wanted_floor THEN
+                SET elvator_status TO IDLE
+                CALL open_doors
+                CALL security_movement
+                CALL close_doors
+            ELSE 
+                CONTINUE UNTIL current_floor EQUAL wanted_floor THEN SET elevators_status TO IDLE
+            ENDIF 
+            READ user input TO user press external button
+            IF user input EQUAL NONE THEN
+                CALL back_origin
+            ELSE 
+                CALL main_program
+            ENDIF
+        ENDWHILE
+    ENDSEQUENCE
