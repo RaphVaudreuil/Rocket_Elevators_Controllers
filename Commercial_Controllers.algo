@@ -29,9 +29,9 @@
         SET doors TO open 
     ENDSEQUENCE
 
-    SEQUENCE user_calling_elevator_billboard USING number_column AND number_elevator AND user_input
+    SEQUENCE user_calling_elevator_billboard USING column AND elevator AND user_input
         READ user is input 
-        RETURN number_column AND number_elevator SORT by ranking
+        RETURN column AND elevator 
     ENDSEQUENCE
 
     SEQUENCE entering_elevator USING total_weight AND warning_alarm AND security AND close_doors AND elevators AND elevator_status AND number_floors
@@ -114,10 +114,25 @@
     SET column_2 TO floor_2 TO 20 ADD ground_floor
     SET column_3 TO floor_21 TO 40 ADD ground_floor
     SET column_4 TO floor_41 TO 60 ADD ground_floor
+    IF hour EQUAL 7am TO 9am THEN
+        SET elevators TO rush_hour
+    ELSE 
+        SET elevators TO origin
+    ENDIF 
+    IF hour EQUAL 11am TO 1pm THEN
+        SET elevators TO rush_hour
+    ELSE 
+        SET elevators TO origin
+    ENDIF 
+    IF hour EQUAL 4pm TO 6pm THEN
+        SET elevators TO rush_hour
+    ELSE 
+        SET elevators TO origin
+    ENDIF
 
     
 //Billboard function
-    SEQUENCE Billboard USING number_column AND number_elevator AND user_input
+    SEQUENCE Billboard USING column AND elevator AND user_input
         READ user is input
         RETURN number_column AND number_elevator
     ENDSEQUENCE
