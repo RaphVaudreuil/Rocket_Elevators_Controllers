@@ -134,12 +134,25 @@
 //Billboard function
     SEQUENCE Billboard USING column AND elevator AND user_input
         READ user is input RETURNING wanted_floor
-        RETURN column AND elevator
+        RETURN CALL return_column AND elevator
     ENDSEQUENCE
 //
 
+//Returning column to the billboard
+    SEQUENCE return_column USING wanted_floor AND basement AND floor
+        CASE user is input OF
+            wanted_floor EQUAL basement_1 TO basement_6 :
+                RETURN column_1
+            wanted_floor EQUAL floor_2 TO floor_20 :
+                RETURN column_2
+            wanted_floor EQUAL floor_21 TO floor_40 :
+                RETURN column_3
+            wanted_floor EQUAL floor_41 TO floor_60 :
+                RETURN column_4
+        ENDCASE
+    ENDSEQUENCE
 //
-    IF wanted_floor IS between 
+
 
 //If the user is on floor X and want to go to floor Y
     SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
