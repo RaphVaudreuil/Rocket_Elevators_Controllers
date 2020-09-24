@@ -55,7 +55,7 @@
         WHILE  external button IS click
             CALL elevator RETURNING elevator SORT by rank TO user_emplacement
             SET column TO ON
-            SET elevator_status TO ON
+            SET elevator_status TO movement
             IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
                 SET elevators_direction TO UP
             ELSE 
@@ -63,9 +63,9 @@
             ENDIF
             READ current_floor
             IF current_floor EQUAL user_emplacement
-                SET elevator_status TO IDLE
+                SET elevator_status TO STOP
             ELSE 
-                CONTINUE UNTIL current_floor EQUAL user_emplacement THEN SET elevators_status TO IDLE
+                CONTINUE UNTIL current_floor EQUAL user_emplacement THEN SET elevators_status TO STOP
             ENDIF
         ENDWHILE
         CALL open_door
@@ -101,7 +101,7 @@
 //Back to origin function
 
     SEQUENCE back_origin USING elevator_status AND default_floor AND elevator
-        CALL default_elevator_A AND default_elevator_B IF elevator_status EQUAL IDLE FOR more THAN 10 minutes
+        CALL default_elevator_A AND default_elevator_B IF elevator_status EQUAL IDLE FOR more THAN 10 minutes THEN SET elevator_status TO IDLE
     ENDSEQUENCE
 
 //Back to origin function
@@ -138,15 +138,15 @@
         ELSE 
             SET elevators_direction TO UP
         ENDIF
-        WHILE elevator in movement
+        WHILE elevator_status EQUAL movement
             READ current_floor
             IF current_floor EQUAL wanted_floor THEN
-                SET elvator_status TO IDLE
+                SET elvator_status TO STOP
                 CALL open_doors
                 CALL security_movement
                 CALL close_doors
             ELSE 
-                CONTINUE UNTIL current_floor EQUAL wanted_floor THEN SET elevators_status TO IDLE
+                CONTINUE UNTIL current_floor EQUAL wanted_floor THEN SET elevators_status TO STOP
             ENDIF 
             READ user input TO user press external button
             IF user input EQUAL NONE THEN

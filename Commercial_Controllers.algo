@@ -75,16 +75,31 @@
     SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
         IF user is on floor X AND want TO go TO floor Y THEN  
             CALL elevator RETURNING elevator
-            SET elevator_direction TO ground_floor
-            SET elevator_movement TO down
-            READ current_floors
-            IF current_floors EQUAL ground_floor THEN 
-                SET elevator_status TO IDLE
-                CALL open_doors
-                CALL close_doors
-            ELSE 
-                CONTINUE until current_floors EQUAL ground_floor
-            ENDIF
+            SET elevator_status TO movement
+            SET elevator_direction TO up
+            WHILE elevator_status EQUAL movement
+                READ current_floor
+                IF current_floor EQUAL user_emplacement
+                    SET elevator_status TO STOP
+                    CALL open_doors
+                ELSE 
+                    continue until current_floor EQUAL user_emplacement
+                ENDIF
+            ENDWHILE
+            CALL security_movement
+            CALL max_detection
+            CALL close_doors
+            SET elevator_movement TO movement
+            SET elevator_direction TO down
+            WHILE elevator_movement EQUAL movement
+                READ current_floors
+                IF current_floors EQUAL ground_floor THEN 
+                    SET elevator_status TO STOP
+                    CALL open_doors
+                    CALL close_doors
+                ELSE 
+                    CONTINUE until current_floors EQUAL ground_floor
+                ENDIF
         ELSE 
             BREAK
         ENDIF
