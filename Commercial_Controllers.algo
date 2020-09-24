@@ -110,7 +110,7 @@
 //Floor display function in the elevator
     SEQUENCE floor_display_elevator USING current_floors
         READ current_floors
-        RETURN CALL current_floor_display
+        RETURN CALL return_current_floor
     ENDSEQUENCE
 //
 
@@ -322,13 +322,13 @@ ENDSEQUENCE
             READ current_floors
         ENDWHILE
         IF current_floor EQUAL floor_requested THEN
-            SET elvator_status TO IDLE
+            SET elvator_status TO STOP
             CALL open_doors
             CALL security_movement
             CALL close_doors
         ELSE 
             continue until current_floor EQUAL floor_requested THEN 
-            SET elevator_status TO IDLE
+            SET elevator_status TO STOP
             CALL open_doors
             CALL close_doors
         ENDIF
