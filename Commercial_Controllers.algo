@@ -1,105 +1,6 @@
-//PSEUDOCODE
-
-    SEQUENCE origin
-        SET column_1 AND column_2 AND column_3 AND column_4 TO battery
-        SET battery TO OFF
-        SET elevator_status TO IDLE
-        SET elevator_A AND elevator_B AND elevator_C TO column 1
-        SET elevator_D AND elevator_E AND elevator F TO column 2
-        SET elevator_G AND elevator_H AND elevator_I TO column 3
-        SET elevator_J AND elevator_K AND elevator_L TO column 4
-        SET column_1 TO basement_1 TO basement_6 ADD ground_floor
-        SET column_2 TO floor_2 TO floor_20 ADD ground_floor
-        SET column_3 TO floor_21 TO floor_40 ADD ground_floor
-        SET column_4 TO floor_41 TO floor_60 ADD ground_floor
-        ground_floor EQUAL floor_1
-        IF hour EQUAL 7am TO 9am THEN
-            SET elevator TO ground_floor
-        ELSE 
-            SET elevator TO ground_floor
-        ENDIF 
-        IF hour EQUAL 11am TO 1pm THEN
-            SET elevator TO ground_floor
-        ELSE 
-            SET elevator TO ground_floor
-        ENDIF 
-        IF hour EQUAL 4pm TO 6pm THEN
-            SET elevator TO ground_floor
-        ELSE 
-            SET elevator TO ground_floor
-        ENDIF 
-    ENDSEQUENCE
-
-    SEQUENCE user_calling_elevator_billboard USING column AND elevator AND user_input
-        READ user is input RETURNING wanted_floor OR wanted_basement
-        RETURN column AND elevator 
-    ENDSEQUENCE
-
-    SEQUENCE entering_elevator USING total_weight AND warning_alarm AND security AND close_doors AND elevators AND elevator_status AND number_floors
-        READ total_weight
-        IF total_weight >= 1500KG THEN
-            SET warning_alarm TO ON 
-            DISPLAY "Total Weight exceed! Please do not exceed 1 500KG"
-        ELSE
-            KEEP adding more user
-            READ security RETURNING 20 seconds
-            RETURN close_doors
-        ENDIF
-        SET elevator_status TO movement 
-        WHILE elevator is in movement 
-            SET show_number_floor TO ON 
-            READ number_floors
-            RETURN number_floors
-            READ number_floors
-            IF number_floor EQUAL floor_requested THEN
-                SET elvator_status TO IDLE
-                SET open_door TO TRUE
-                CALL security RETURNING 20 seconds
-                RETURN close_doors
-            ELSE 
-                SET elevator_status TO movement
-            ENDIF
-        ENDWHILE
-        RETURN elevator TO origin
-    ENDSEQUENCE 
-
-    SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
-        IF user is on floor X AND want TO go TO floor Y THEN  
-            CALL elevator RETURNING elevator SORT by ranking
-            SET open_doors TO TRUE
-             READ total_weight
-            IF total_weight >= 1500KG THEN
-                SET warning_alarm TO ON 
-                DISPLAY "Total Weight exceed! Please do not exceed 1 500KG"
-                STOP adding more user
-            ELSE
-                KEEP adding more user
-                READ security RETURNING 20 seconds
-                RETURN close_doors
-            ENDIF
-            SET elevator_direction TO ground_floor
-            SET elevator_movement TO down
-            READ number_floors
-            IF number_floors EQUAL ground_floor AND requested_elevator THEN 
-                SET elevator_status TO IDLE
-                SET doors TO open
-                CALL security RETURNING 20 seconds
-                RETURN close_doors
-            ELSE 
-                SET elevator_status TO movement
-            ENDIF
-        ELSE 
-            BREAK
-        ENDIF
-        CALL user_calling_elevator_billboard AND entering_elevator
-    ENDSEQUENCE
-//
-
-
-
-
 //Default parameters
 
+    SET column_1 AND column_2 AND column_3 AND column_4 TO battery
     SET battery TO OFF
     SET number_floors TO 66
     SET number_basements TO 6
@@ -154,7 +55,7 @@
     ENDSEQUENCE
 //
 
-//Returning elevator to the billaboard
+//Returning elevator to the billboard
     SEQUENCE return_elevator
         CASE user is input OF 
             wanted_floor EQUAL basement_1 TO basement_6 :
@@ -365,16 +266,6 @@ ENDSEQUENCE
     ENDSEQUENCE
 //
 
-//Back to origin
-    SEQUENCE back_origin
-        IF elevator_status EQUAL IDLE THEN
-            CALL origin
-        ELSE 
-            elevator_status EQUAL movement
-        ENDIF
-    ENDSEQUENCE
-//
-
 //Maximum load detection
 
     SEQUENCE max_detection USING maximum_load
@@ -390,3 +281,43 @@ ENDSEQUENCE
     ENDSEQUENCE
     
 //Maximum load detection
+
+//Security movement function
+
+    SEQUENCE security_movement
+        IF user enter in elevator THEN
+            SET security_movement TO ON
+            CALL open_doors
+        ELSE 
+            SET security_movement TO OFF
+            CALL close_doors
+        ENDIF
+    ENDSEQUENCE
+
+//Security movement function
+
+//Main program
+    SEQUENCE main_program
+        CALL billboard
+        CALL user_other_floor
+        SET elevator_status TO movement
+        SET elevator_direction TO UP
+        WHILE elevator is in movement 
+            CALL floor_display_elevator
+            READ current_floors
+        ENDWHILE
+        IF current_floor EQUAL floor_requested THEN
+            SET elvator_status TO IDLE
+            CALL open_doors
+            CALL security_movement
+            CALL close_doors
+        ELSE 
+            continue until current_floor EQUAL floor_requested THEN 
+            SET elevator_status TO IDLE
+            CALL open_doors
+            CALL close_doors
+        ENDIF
+        RETURN elevator TO ground_floor
+    ENDSEQUENCE
+
+//Main program
