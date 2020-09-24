@@ -109,8 +109,8 @@
     SET elevator_D AND elevator_E AND elevator F TO column 2
     SET elevator_G AND elevator_H AND elevator_I TO column 3
     SET elevator_J AND elevator_K AND elevator_L TO column 4
-    SET column_1 TO SS1 TO SS6 ADD ground_floor
-    SET ground_floor equal floor_1
+    SET column_1 TO basement_1 TO basement_6 ADD ground_floor
+    ground_floor equal floor_1
     SET column_2 TO floor_2 TO 20 ADD ground_floor
     SET column_3 TO floor_21 TO 40 ADD ground_floor
     SET column_4 TO floor_41 TO 60 ADD ground_floor
@@ -137,6 +137,9 @@
         RETURN column AND elevator
     ENDSEQUENCE
 //
+
+//
+    IF wanted_floor IS between 
 
 //If the user is on floor X and want to go to floor Y
     SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
