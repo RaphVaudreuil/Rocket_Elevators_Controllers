@@ -108,13 +108,13 @@
 
     SEQUENCE max_detection USING maximum_load
         READ total_weight
-        IF total_weight <= 1275 KG THEN 
-            SET red_light TO FALSE
-            CONTINUE picking up user
-        ELSE
+        IF total_weight EQUAL 1275 KG THEN 
             SET red_light TO TRUE
             STOP picking up user
             DISPLAY "Maximum number of user achieved! No more passenger will be allowed!!"
+        ELSE
+            SET red_light TO FALSE
+            CONTINUE picking up user
         ENDIF
     ENDSEQUENCE
     
