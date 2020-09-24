@@ -176,11 +176,24 @@
 //
 
 //Floor display function in the elevator
-    SEQUENCE floor_display_elevator USING number_floors
+    SEQUENCE floor_display_elevator USING current_floors
         READ current_floors
         RETURN current_floors
     ENDSEQUENCE
 //
+
+//
+    CASE diplay current floor
+        current_floors EQUAL floor_1
+            RETURN floor_1
+        current_floors EQUAL floor_2
+            RETURN floor_2
+        current_floors EQUAL floor_3
+            RETURN floor_3
+        current_floors EQUAL floor_4
+            RETURN floor_4
+        current_floors EQUAL floor_5
+            RETURN floor_5
 
 //Door function
     SEQUENCE door_function USING open_door AND close_door AND user_emplacement AND security
