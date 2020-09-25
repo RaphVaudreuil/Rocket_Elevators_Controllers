@@ -1,8 +1,7 @@
 //Default parameters
 
     SET column_1 AND column_2 AND column_3 AND column_4 TO battery
-    SET battery TO OFF
-    SET number_floors TO 66
+    SET number_floors TO 60
     SET number_basements TO 6
     SET number_column TO 4
     SET number_elevator TO 12
@@ -16,6 +15,10 @@
     SET column_2 TO floor_2 TO 20 ADD ground_floor
     SET column_3 TO floor_21 TO 40 ADD ground_floor
     SET column_4 TO floor_41 TO 60 ADD ground_floor
+    SET security TO decrement OF 20 seconds
+    SET elevator_direction TO NULL
+    SET wanted_floor TO NULL
+    SET user_emplacement TO NULL
     IF hour EQUAL 7am TO 9am THEN
         SET elevators TO ground_floor
     ELSE 
@@ -34,7 +37,7 @@
 
     
 //Billboard function
-    SEQUENCE Billboard USING column AND elevator AND user_input
+    SEQUENCE Billboard USING return_column AND return_elevator AND user_input AND wanted_floor
         READ user is input RETURNING wanted_floor
         RETURN CALL return_column AND return_elevator
     ENDSEQUENCE
@@ -56,7 +59,7 @@
 //
 
 //Returning elevator to the billboard
-    SEQUENCE return_elevator
+    SEQUENCE return_elevator USING wanted_floor AND basement AND elevator
         CASE user is input OF 
             wanted_floor EQUAL basement_1 TO basement_6 :
                 RETURN elevator_A OR elevator_B OR elevator_C
@@ -72,9 +75,9 @@
 
 
 //If the user is on floor X and want to go to floor Y
-    SEQUENCE user_other_floor USING elevator AND billboard AND elevator_movement AND elevator_direction
+    SEQUENCE user_other_floor USING elevator AND billboard AND elevator_status AND elevator_direction AND elevator_status AND current_floor AND user_emplacement
         IF user is on floor X AND want TO go TO floor Y THEN  
-            CALL elevator RETURNING elevator
+            CALL elevator RETURNING elevator SORT by rank
             SET elevator_status TO movement
             SET elevator_direction TO up
             WHILE elevator_status EQUAL movement
@@ -82,20 +85,24 @@
                 IF current_floor EQUAL user_emplacement
                     SET elevator_status TO STOP
                     CALL open_doors
+                    CALL security_movement
+                    CALL max_detection
                 ELSE 
                     continue until current_floor EQUAL user_emplacement
                 ENDIF
             ENDWHILE
             CALL security_movement
             CALL max_detection
+            CALL security
             CALL close_doors
-            SET elevator_movement TO movement
+            SET elevator_status TO movement
             SET elevator_direction TO down
-            WHILE elevator_movement EQUAL movement
+            WHILE elevator_status EQUAL movement
                 READ current_floors
                 IF current_floors EQUAL ground_floor THEN 
                     SET elevator_status TO STOP
                     CALL open_doors
+                    CALL security
                     CALL close_doors
                 ELSE 
                     CONTINUE until current_floors EQUAL ground_floor
@@ -108,13 +115,13 @@
 //
 
 //Floor display function in the elevator
-    SEQUENCE floor_display_elevator USING current_floors
+    SEQUENCE floor_display_elevator USING current_floors AND return_current_floor
         READ current_floors
         RETURN CALL return_current_floor
     ENDSEQUENCE
 //
 
-SEQUENCE return_current_floor USING current_floor AND basement AND floor
+SEQUENCE return_current_floor USING current_floor AND basement AND floor AND ground_floor
     CASE diplay current floor
         current_floors EQUAL ground_floor
             RETURN ground_floor
@@ -256,15 +263,15 @@ ENDSEQUENCE
 
 //Open doors function
 
-    SEQUENCE open_doors USING default_floor AND user_emplacement
-        SET open_doors TO TRUE IF elevator EQUAL default_floor_A AND default_floor_B AND user_emplacement
+    SEQUENCE open_doors USING ground_floor AND user_emplacement AND open_doors
+        SET open_doors TO TRUE IF elevator EQUAL ground_floor OR user_emplacement
     ENDSEQUENCE
 
 //Open doors function
 
 //Close doors function
 
-    SEQUENCE close_doors USING security
+    SEQUENCE close_doors USING security AND close_doors
         CALL security THEN SET close_doors TO TRUE
     ENDSEQUENCE
 
@@ -283,7 +290,7 @@ ENDSEQUENCE
 
 //Maximum load detection
 
-    SEQUENCE max_detection USING maximum_load
+    SEQUENCE max_detection USING maximum_load AND total_weight AND red_light
         READ total_weight
         IF total_weight EQUAL 1500 KG THEN 
             SET red_light TO TRUE
@@ -299,12 +306,13 @@ ENDSEQUENCE
 
 //Security movement function
 
-    SEQUENCE security_movement
+    SEQUENCE security_movement USING security_movement AND security AND close_doors
         IF user enter in elevator THEN
             SET security_movement TO ON
-            CALL open_doors
+            LET the doors open
         ELSE 
             SET security_movement TO OFF
+            CALL security
             CALL close_doors
         ENDIF
     ENDSEQUENCE
@@ -317,19 +325,22 @@ ENDSEQUENCE
         CALL user_other_floor
         SET elevator_status TO movement
         SET elevator_direction TO UP
-        WHILE elevator is in movement 
-            CALL floor_display_elevator
+        WHILE elevator EQUAL movement 
+            CALL floor_display_elevator RETURNING current_floor
             READ current_floors
         ENDWHILE
         IF current_floor EQUAL floor_requested THEN
             SET elvator_status TO STOP
             CALL open_doors
             CALL security_movement
+            CALL security
             CALL close_doors
         ELSE 
             continue until current_floor EQUAL floor_requested THEN 
             SET elevator_status TO STOP
             CALL open_doors
+            CALL security_movement
+            CALL security
             CALL close_doors
         ENDIF
         RETURN elevator TO ground_floor

@@ -108,7 +108,7 @@
 
 //Maximum load detection
 
-    SEQUENCE max_detection USING maximum_load
+    SEQUENCE max_detection USING maximum_load AND total_weight AND red_light
         READ total_weight
         IF total_weight EQUAL 1275 KG THEN 
             SET red_light TO TRUE
