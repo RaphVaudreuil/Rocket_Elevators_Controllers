@@ -129,10 +129,11 @@
         ENDWHILE
         WHILE user enter in the elevator
             CALL security_movement
-            CALL maximum_load
-            CALL external_button
+            CALL maximum_detection
+            CALL internal_button
         ENDWHILE
         CALL security
+        CALL security_movement
         CALL close_doors
         SET elevator_status TO movement
         IF user_emplacement IS GREATER THAN wanted_floor THEN
