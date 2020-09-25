@@ -50,10 +50,10 @@
 
 //External button function
 
-    SEQUENCE external_button USING Elevator_A_emplacement AND Elevator_B_emplacement AND user_emplacement AND elevators_direction AND column AND elevator AND elevator_status AND current_floor
+    SEQUENCE external_button USING Elevator_A_emplacement AND Elevator_B_emplacement AND user_emplacement AND elevators_direction AND column AND elevator AND elevator_status AND current_floor AND best_elevator
         WHILE  external button IS click
             CALL column
-            CALL elevator RETURNING elevator SORT by rank TO user_emplacement
+            CALL elevator RETURNING best_elevator TO user_emplacement
             SET elevator_status TO movement
             IF user_emplacement IS GREATER THAN Elevator_A_emplacement OR Elevator_B_emplacement THEN
                 SET elevators_direction TO UP
