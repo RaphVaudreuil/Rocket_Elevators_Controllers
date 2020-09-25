@@ -6,15 +6,6 @@
     SET number_column TO 4
     SET number_elevator TO 12
     SET elevator_status TO IDLE
-    SET elevator_A AND elevator_B AND elevator_C TO column 1
-    SET elevator_D AND elevator_E AND elevator_F TO column 2
-    SET elevator_G AND elevator_H AND elevator_I TO column 3
-    SET elevator_J AND elevator_K AND elevator_L TO column 4
-    ground_floor equal floor_1
-    SET column_1 TO basement_1 TO basement_6 ADD ground_floor
-    SET column_2 TO floor_2 TO 20 ADD ground_floor
-    SET column_3 TO floor_21 TO 40 ADD ground_floor
-    SET column_4 TO floor_41 TO 60 ADD ground_floor
     SET security TO decrement OF 20 seconds
     SET elevator_direction TO NULL
     SET wanted_floor TO NULL
