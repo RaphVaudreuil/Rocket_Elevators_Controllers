@@ -1,7 +1,5 @@
 //-----------------------------------------------Column Object-----------------------------------------------------------//
 
-
-
     class Column {
 
         constructor(status, id, minimumFloor, maximumFloor, numberOfElevators, numberOfFloors, elevatorList, buttonsUpList, buttonsDownList) {  
