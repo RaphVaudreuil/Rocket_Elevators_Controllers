@@ -12,6 +12,8 @@
             this.elevatorList = [];
             this.buttonsUpList = [];
             this.buttonsDownList = [];
+            this.activeElevatorsList = [];
+            this.idleElevatorsList = [];
     
     
             function createElevatorList(numberOfElevators) {
@@ -37,9 +39,8 @@
                 }
             }
 //---------------------------------------LOGIC TO FIND THE BEST ELEVATOR WITH A PRIORIZATION LOGIC----------------------------//  
+
             function findElevator(currentFloor, currentDirection, elevatorList) {
-                this.activeElevatorsList = [];
-                this.idleElevatorsList = [];
                 for(elevatorN in elevatorList) {
                     if(elevatorN.status != "Idle" && elevatorN.status == currentDirection) {
                         if(elevatorN.status == "Up" && elevatorN.floor < currentFloor || elevatorN.status == "Down" && elevatorN.floor > currentFloor) {
