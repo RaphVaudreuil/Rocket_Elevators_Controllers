@@ -45,8 +45,9 @@
                     if(elevatorN.status != "Idle" && elevatorN.status == currentDirection) {
                         if(elevatorN.status == "Up" && elevatorN.floor < currentFloor || elevatorN.status == "Down" && elevatorN.floor > currentFloor) {
                             this.activeElevatorsList.push(elevatorN);
-                        } else 
-                            this.idleElevatorsList.push(elevatorN);   
+                        } else {
+                            this.idleElevatorsList.push(elevatorN); 
+                        }  
                     }
                 }
             }
